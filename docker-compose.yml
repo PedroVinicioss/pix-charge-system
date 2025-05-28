@@ -1,0 +1,38 @@
+services:
+  api:
+    build:
+      context: ./backend
+      dockerfile: PixCharge.API/Dockerfile
+    container_name: pixcharge-api
+    ports:
+      - "5000:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=db;Database=PixChargeDB;User=sa;Password=Your_password123;
+    depends_on:
+      - db
+
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: pixcharge-db
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=Your_password123
+      - MSSQL_PID=Express
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver-data:/var/opt/mssql
+
+  frontend:
+    build:
+      context: ./frontend/pix-charge-app
+      dockerfile: Dockerfile
+    container_name: pixcharge-frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:5000
+
+volumes:
+  sqlserver-data:
