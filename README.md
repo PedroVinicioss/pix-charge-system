@@ -91,7 +91,7 @@ npm run dev
 
 Desenvolvido por **Pedro Vinícios**  
 📧 [pedrooviniciossantos@gmail.com]  
-🔗 [linkedin.com/in/pedro-vinicios](https://linkedin.com)
+🔗 [linkedin.com/in/pedro-vinicios](https://linkedin.com/in/pedro-vinicios)
 
 ---
 
