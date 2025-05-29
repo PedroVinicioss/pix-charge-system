@@ -22,6 +22,6 @@ namespace PixCharge.API.Models
         public DateTime CreatedAt { get; private set; }
 
         public ICollection<Client> Clients { get; private set; } = new List<Client>();
-        public ICollection<PixCharge> Charges { get; private set; } = new List<PixCharge>();
+        public ICollection<Pix> Charges { get; private set; } = new List<Pix>();
     }
 }

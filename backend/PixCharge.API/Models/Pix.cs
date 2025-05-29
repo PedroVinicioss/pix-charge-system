@@ -1,8 +1,8 @@
 namespace PixCharge.API.Models
 {
-    public class PixCharge
+    public class Pix
     {
-        public PixCharge(Guid userId, Guid clientId, decimal amount, string description, string qrCodeUrl, string pixCopyPaste, string externalChargeId, DateTime expirationDate)
+        public Pix(Guid userId, Guid clientId, decimal amount, string description, string qrCodeUrl, string pixCopyPaste, string externalChargeId, DateTime expirationDate)
         {
             Id = Guid.NewGuid();
             UserId = userId;
@@ -16,7 +16,7 @@ namespace PixCharge.API.Models
             Status = "Pending";
             CreatedAt = DateTime.UtcNow;
         }
-        protected PixCharge() { }
+        protected Pix() { }
 
 
         public Guid Id { get; private set; }

@@ -25,7 +25,7 @@ namespace PixCharge.API.Models
         public string Document { get; private set; }
         public DateTime CreatedAt { get; private set; }
 
-        public ICollection<PixCharge> Charges { get; private set; } = new List<PixCharge>();
+        public ICollection<Pix> Charges { get; private set; } = new List<Pix>();
     }
 
 }
