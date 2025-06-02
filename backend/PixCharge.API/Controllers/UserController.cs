@@ -54,7 +54,7 @@ namespace PixCharge.API.Controllers
             }
 
             model.Password = _authService.ComputeHash(model.Password);
-            var user = model.toEntity();
+            var user = model.ToEntity();
 
             _db.Users.Add(user);
             _db.SaveChanges();
@@ -77,7 +77,7 @@ namespace PixCharge.API.Controllers
                 return Unauthorized("Invalid email or password.");
             }
 
-            var token = _authService.GenerateToken(user.Email, user.Role);
+            var token = _authService.GenerateToken(user.Id,user.Email, user.Role);
             return Ok(new { Token = token });
         }
     }

@@ -21,6 +21,8 @@ builder.Configuration
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseInMemoryDatabase("FakeDb"));
 
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<IUserContextService, UserContextService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>

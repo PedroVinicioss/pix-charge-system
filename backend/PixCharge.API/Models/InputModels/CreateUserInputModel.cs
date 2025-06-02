@@ -17,7 +17,7 @@ namespace PixCharge.API.Models.InputModels
             Role = role;
         }
 
-        public User toEntity()
+        public User ToEntity()
         {
             return new User(Name, Email, Password, PixKey);
         }

@@ -17,8 +17,11 @@ namespace PixCharge.API.Models
 
         public Guid Id { get; private set; }
         public Guid UserId { get; private set; }
+        public User User { get; set; }
         public Guid ClientId { get; private set; }
+        public Client Client { get; set; }
         public Guid? PixChargeId { get; private set; }
+        public Pix PixCharge { get; set; } 
 
         public string Type { get; private set; } // Email, WhatsApp, etc.
         public string Status { get; private set; } // Pending, Sent, Failed

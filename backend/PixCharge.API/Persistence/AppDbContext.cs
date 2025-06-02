@@ -1,12 +1,14 @@
 using Microsoft.EntityFrameworkCore;
 using PixCharge.API.Models;
+using PixCharge.API.Services;
 
 namespace PixCharge.API.Persistence
 {
     public class AppDbContext : DbContext
     {
-        public AppDbContext(DbContextOptions<AppDbContext> options)
-            : base(options) { }
+        private readonly IUserContextService _userContext;
+        public AppDbContext(DbContextOptions<AppDbContext> options, IUserContextService userContext)
+            : base(options) { _userContext = userContext; }
 
         public DbSet<User> Users => Set<User>();
         public DbSet<Client> Clients => Set<Client>();
@@ -17,6 +19,7 @@ namespace PixCharge.API.Persistence
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            var userId = _userContext.UserId;
 
             // User -> Clients
             modelBuilder.Entity<User>()
@@ -25,12 +28,16 @@ namespace PixCharge.API.Persistence
                 .HasForeignKey(c => c.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            modelBuilder.Entity<Client>().HasQueryFilter(c => c.UserId == userId);
+
             // User -> PixCharges
             modelBuilder.Entity<User>()
                 .HasMany(u => u.Charges)
                 .WithOne(c => c.User)
                 .HasForeignKey(c => c.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Pix>().HasQueryFilter(p => p.UserId == userId);
 
             // Client -> PixCharges
             modelBuilder.Entity<Client>()
@@ -51,6 +58,8 @@ namespace PixCharge.API.Persistence
                 .HasForeignKey(r => r.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            modelBuilder.Entity<PixRecurringCharge>().HasQueryFilter(r => r.UserId == userId);
+
             modelBuilder.Entity<PixRecurringCharge>()
                 .HasOne(r => r.Client)
                 .WithMany()
@@ -65,6 +74,27 @@ namespace PixCharge.API.Persistence
             modelBuilder.Entity<Notification>()
                 .Property(n => n.Message)
                 .HasMaxLength(2000);
+
+            modelBuilder.Entity<Notification>()
+                .HasOne(n => n.User)
+                .WithMany()
+                .HasForeignKey(n => n.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Notification>()
+                .HasOne(n => n.Client)
+                .WithMany()
+                .HasForeignKey(n => n.ClientId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Notification>()
+                .HasOne(n => n.PixCharge)
+                .WithMany()
+                .HasForeignKey(n => n.PixChargeId)
+                .OnDelete(DeleteBehavior.SetNull);
+
+            modelBuilder.Entity<Notification>().HasQueryFilter(n => n.UserId == userId);
+            
         }
     }
 }
