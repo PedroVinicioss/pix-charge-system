@@ -1,11 +1,13 @@
 services:
   api:
     build:
-      context: ./backend
-      dockerfile: PixCharge.API/Dockerfile
+      context: .
+      dockerfile: backend/PixCharge.API/Dockerfile
     container_name: pixcharge-api
     ports:
       - "5000:8080"
+    volumes:
+      - ./backend:/src/backend
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__DefaultConnection=Server=db;Database=PixChargeDB;User=sa;Password=Your_password123;Encrypt=False;TrustServerCertificate=True;
